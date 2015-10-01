@@ -66,7 +66,7 @@ void operatorControl() {
 		motorSet(10, joystick1);
 		motorSet(1, joystick2);
 		}
-		else{
+		else {
 			int x, y, leftPower, rightPower;
 			x = joystickGetAnalog(1, 1);
 			y = joystickGetAnalog(1, 2);
