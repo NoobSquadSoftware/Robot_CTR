@@ -51,6 +51,7 @@
  *
  * This task should never exit; it should end with some kind of infinite loop, even if empty.
  */
+
 bool autoLoop = false;
 int loopCounter = 0;
 int stepCounter = 0;
@@ -58,42 +59,48 @@ int joystickLeftCenter = 0;
 int joystickRightCenter = 0;
 bool arcadeControl = true;
 void operatorControl() {
-
-	while (1) {
-		if(!arcadeControl){
-		int joystick1 = joystickGetAnalog(1, 2);
-		int joystick2 = joystickGetAnalog(1, 3);
-		motorSet(10, joystick1);
-		motorSet(1, joystick2);
-		}
-		else {
-			int x, y, leftPower, rightPower;
-			x = joystickGetAnalog(1, 1);
-			y = joystickGetAnalog(1, 2);
-			leftPower = x + y;
-			rightPower = y -x;
-			if(leftPower > 127){
-				leftPower = 127;
-			}
-			if(leftPower < -127){
-				leftPower = -127;
-			}
-			if(rightPower < 127){
-				rightPower = 127;
-			}
-			if(rightPower < -127){
-				rightPower = -127;
-			}
-			motorSet(10, rightPower);
-			motorSet(1, leftPower);
-		}
-		if(joystickGetDigital(1, 8, JOY_DOWN)){
-			autoLoop = true;
-			stepCounter = 1;
-		}
-		if(joystickGetDigital(1, 8, JOY_UP)){
-			arcadeControl = !arcadeControl;
-		}
-		}
-
-	}
+    
+    while (1) {
+        
+        int x, y, leftPower, rightPower;
+        
+        /* Check joystick analog */
+        
+        x = joystickGetAnalog(1, 1);
+        y = joystickGetAnalog(1, 2);
+        
+        /* Define speeds of motors */
+        
+        leftPower = x + y;
+        rightPower = y -x;
+        
+        /* Don't allow for the motor power to exceed its maximum of 127. */
+        
+        if(leftPower > 127){
+            leftPower = 127;
+        }
+        if(leftPower < -127){
+            leftPower = -127;
+        }
+        if(rightPower < 127){
+            rightPower = 127;
+        }
+        if(rightPower < -127){
+            rightPower = -127;
+        }
+        
+        motorSet(10, rightPower);
+        motorSet(1, rightPower);
+        motorSet(9, leftPower);
+        motorSet(2, leftPower);
+    }
+    if(joystickGetDigital(1, 8, JOY_DOWN)){
+        autoLoop = true;
+        stepCounter = 1;
+    }
+    if(joystickGetDigital(1, 8, JOY_UP)){
+        arcadeControl = !arcadeControl;
+        autoLoop = true;
+        stepCounter = 1;
+    }
+}
