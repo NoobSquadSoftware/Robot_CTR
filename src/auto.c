@@ -62,7 +62,7 @@ void operatorControl() {
 
     while (1) {
 
-        int x, y, leftPower, rightPower;
+        int x, y, leftPower, rightPower, dankMemes;
 
         /* Check joystick analog */
 
@@ -89,10 +89,12 @@ void operatorControl() {
             rightPower = -127;
         }
 
+        dankMemes = leftPower *-1;
+
         motorSet(10, rightPower);
         motorSet(1, rightPower);
         motorSet(9, leftPower);
-        motorSet(2, -leftPower);
+        motorSet(2, dankMemes);
     }
     if(joystickGetDigital(1, 8, JOY_DOWN)){
         autoLoop = true;
