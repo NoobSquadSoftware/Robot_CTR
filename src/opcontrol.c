@@ -53,14 +53,25 @@
  * This task should never exit; it should end with some kind of infinite loop, even if empty.
  */
 
+#pragma config(Motor, port8, clawMotor, tmotorNormal, openLoop)
+#pragma config(Motor, port9, elevatorMotor, tmotorNormal, openLoop)
+
 bool autoLoop = false;
 int loopCounter = 0;
 int stepCounter = 0;
 int joystickRightCenter;
 
 void operatorControl() {
-
-	while (1) {
+	while (1 == 1) {
+		if(vexRT[Btn6U] == 1) {
+		      motor[elevatorMotor] = 60;
+		}
+		else if(vexRT[Btn6D] == 1) {
+		      motor[elevatorMotor] = -40;
+		}
+		else {
+		      motor[elevatorMotor] = 0;
+		}
 		int joystick1 = joystickGetAnalog(1, 2);
 		int joystick2 = joystickGetAnalog(1, 3);
 		motorSet(10,joystick1);
