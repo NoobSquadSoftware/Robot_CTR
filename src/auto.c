@@ -1,7 +1,8 @@
-/** @file opcontrol.c
- * @brief File for operator control code
+@@ -0,0 +1,52 @@
+/** @file auto.c
+ * @brief File for autonomous code
  *
- * This file should contain the user operatorControl() function and any functions related to it.
+ * This file should contain the user autonomous() function and any functions related to it.
  *
  * Copyright (c) 2011-2014, Purdue University ACM SIG BOTS.
  * All rights reserved.
@@ -35,69 +36,18 @@
 #include "main.h"
 
 /*
- * Runs the user operator control code. This function will be started in its own task with the
- * default priority and stack size whenever the robot is enabled via the Field Management System
- * or the VEX Competition Switch in the operator control mode. If the robot is disabled or
- * communications is lost, the operator control task will be stopped by the kernel. Re-enabling
- * the robot will restart the task, not resume it from where it left off.
+ * Runs the user autonomous code. This function will be started in its own task with the default
+ * priority and stack size whenever the robot is enabled via the Field Management System or the
+ * VEX Competition Switch in the autonomous mode. If the robot is disabled or communications is
+ * lost, the autonomous task will be stopped by the kernel. Re-enabling the robot will restart
+ * the task, not re-start it from where it left off.
  *
- * If no VEX Competition Switch or Field Management system is plugged in, the VEX Cortex will
- * run the operator control task. Be warned that this will also occur if the VEX Cortex is
- * tethered directly to a computer via the USB A to A cable without any VEX Joystick attached.
+ * Code running in the autonomous task cannot access information from the VEX Joystick. However,
+ * the autonomous function can be invoked from another task if a VEX Competition Switch is not
+ * available, and it can access joystick information if called in this way.
  *
- * Code running in this task can take almost any action, as the VEX Joystick is available and
- * the scheduler is operational. However, proper use of delay() or taskDelayUntil() is highly
- * recommended to give other tasks (including system tasks such as updating LCDs) time to run.
- *
- * This task should never exit; it should end with some kind of infinite loop, even if empty.
+ * The autonomous task may exit, unlike operatorControl() which should never exit. If it does
+ * so, the robot will await a switch to another mode or disable/enable cycle.
  */
-
-bool autoLoop = false;
-int loopCounter = 0;
-int stepCounter = 0;
-int joystickLeftCenter = 0;
-int joystickRightCenter = 0;
-bool arcadeControl = true;
-void operatorControl() {
-
-    while (1) {
-
-        int x, y, leftPower, rightPower, dankMemes;
-
-        /* Check joystick analog */
-
-        x = joystickGetAnalog(1, 1);
-        y = joystickGetAnalog(1, 2);
-
-        /* Define speeds of motors */
-
-        leftPower = x + y;
-        rightPower = y -x;
-
-        /* Don't allow for the motor power to exceed its maximum of 127. */
-
-        if(leftPower > 127){
-            leftPower = 127;
-        }
-        if(leftPower < -127){
-            leftPower = -127;
-        }
-        if(rightPower < 127){
-            rightPower = 127;
-        }
-        if(rightPower < -127){
-            rightPower = -127;
-        }
-
-        dankMemes = leftPower *-1;
-
-        motorSet(10, rightPower);
-        motorSet(1, rightPower);
-        motorSet(9, leftPower);
-        motorSet(2, dankMemes);
-    }
-    if(joystickGetDigital(1, 8, JOY_DOWN)){
-        autoLoop = true;
-        stepCounter = 1;
-    }
+void autonomous() {
 }
